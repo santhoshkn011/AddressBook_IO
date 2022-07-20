@@ -4,10 +4,6 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class Operations {
     //Creating array List
     static ArrayList<Contacts> contactsDetails = new ArrayList();
@@ -20,7 +16,7 @@ public class Operations {
     public static void AddressBook(Operations operations) throws IOException {
         int select = 0;
         do {
-            System.out.println("1) Add Address Book \n2)Search \n3)Display Adress book \n4) countPersonFromSame_City_State \n5) Sorted Contacts \n6) sortContactsByZipOrCityOrState \n7) Read From File \n8) Add To Adress Book File");
+            System.out.println("1)Add Address Book \n2)Search \n3)Display Address book \n4)countPersonFromSame_City_State \n5)Sorted Contacts \n6)sortContactsByZipOrCityOrState \n7)Read From File \n8)Add To Address Book File");
             System.out.println("choice");
             int ch = sc.nextInt();
             switch (ch) {
@@ -56,7 +52,7 @@ public class Operations {
                     countFromSame_City_State(countname);
                     break;
                 case 5:
-                    System.out.println("Sorted Contacts are alphabatically :- ");
+                    System.out.println("Sorted Contacts are alphabetically :- ");
                     sortConatct(hashmap);
                 case 6:
                     sortContactsByZipOrCityOrState(hashmap);
@@ -130,8 +126,6 @@ public class Operations {
         for (Map.Entry<String, ArrayList<Contacts>> addressBookMapEntry : hashmap.entrySet()) {
             List<Contacts> sortedContacts = addressBookMapEntry.getValue().stream().sorted(Comparator.comparing(contactInfo -> contactInfo.getZip() + contactInfo.getCity() + contactInfo.getState())).collect(Collectors.toList());
             System.out.println("Sorted Contacts By Zip : ");
-
-
             for (Contacts item : sortedContacts) {
                 System.out.println(addressBookMapEntry.getKey());
                 System.out.println(item.toString() + " ");
