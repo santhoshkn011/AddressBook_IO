@@ -1,6 +1,12 @@
 package com.bridgelabz_IO;
 
 import java.io.*;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+
+import java.io.BufferedReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -10,14 +16,15 @@ public class Operations {
     //Taking Scanner Class Object
     static Scanner sc = new Scanner(System.in);
     static File file = new File("C:\\Users\\santh\\IdeaProjects\\AddressBook_IO\\src\\main\\resources\\AddressBookFile.txt");
+    static File csvFile = new File("C:\\Users\\santh\\IdeaProjects\\AddressBook_IO\\src\\main\\resources\\AddressBook.csv");
     static HashMap<String, ArrayList<Contacts>> hashmap = new HashMap<>();
 
     //    method For Adding Multiple Address Book
     public static void AddressBook(Operations operations) throws IOException {
         int select = 0;
         do {
-            System.out.println("1)Add Address Book \n2)Search \n3)Display Address book \n4)countPersonFromSame_City_State \n5)Sorted Contacts \n6)sortContactsByZipOrCityOrState \n7)Read From File \n8)Add To Address Book File");
-            System.out.println("choice");
+            System.out.println("1)Add Address Book \n2)Search \n3)Display Address book \n4)countPersonFromSame_City_State \n5)Sorted Contacts \n6)sortContactsByZipOrCityOrState \n7)Read From File \n8)Add To Address Book File" +
+                    "\n9)Read CSV File\n10. Write CSV File.");
             int ch = sc.nextInt();
             switch (ch) {
                 case 1:
@@ -62,6 +69,12 @@ public class Operations {
                     break;
                 case 8:
                     addToAdressBookFile();
+                    break;
+                case 9:
+                    readFromCSVFile();
+                    break;
+                case 10:
+                    writeCSVFile();
                     break;
                 default:
             }System.out.println("if you do not want to create multiple address book press 1.");
@@ -372,6 +385,55 @@ public class Operations {
             }
         } catch (IOException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+    public static void writeCSVFile(){
+        try {
+            FileWriter fileWriterCSV = new FileWriter(csvFile);
+            fileWriterCSV.write(String.valueOf(Operations.hashmap));
+            fileWriterCSV.close();
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+    public static void readFromCSVFile() {
+//        try (BufferedReader br = Files.newBufferedReader(Paths.get("C:\\Users\\santh\\IdeaProjects\\AddressBook_IO\\src\\main\\resources\\AddressBook.csv"))){
+//            // CSV file delimiter
+//            String DELIMITER = ",";
+//
+//            // read the file line by line
+//            String line;
+//            while ((line = br.readLine()) != null)
+//            //returns a Boolean value
+//            {
+//                String[] contact = line.split(DELIMITER);
+//                //use comma as separator
+////                System.out.println("Contact[First Name=" + contact[1] + ", Last Name=" + contact[2] + ", Address=" + contact[3]+ ", City= " + contact[4] + ", State= " + contact[5]+
+////                        "Pin Code=" + contact[6] + ", Phone Number=" + contact[7] + ", Email Address=" + contact[8] + "]");
+//                System.out.println("Contacts["+ String.join(", ", contact) +"]");
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+        try (Reader reader = Files.newBufferedReader(Paths.get(String.valueOf(csvFile)));
+             CSVReader csvReader = new CSVReader(reader)) {
+            String[] nextRecord;
+            while ((nextRecord = csvReader.readNext()) != null) {
+                System.out.println("First Name: " + nextRecord[0]);
+                System.out.println("Last Name: " + nextRecord[1]);
+                System.out.println("Address: " + nextRecord[2]);
+                System.out.println("City: " + nextRecord[3]);
+                System.out.println("State: " + nextRecord[4]);
+                System.out.println("Pin Code: " + nextRecord[5]);
+                System.out.println("Mobile Number: " + nextRecord[6]);
+                System.out.println("Email Address: " + nextRecord[7]);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (CsvValidationException e) {
+            throw new RuntimeException(e);
         }
     }
 }
